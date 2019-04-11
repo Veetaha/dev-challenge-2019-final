@@ -1,0 +1,53 @@
+{
+    "name": "dev-challenge-2019",
+    "version": "0.0.1",
+    "description": "",
+    "author": "",
+    "license": "MIT",
+    "scripts": {
+        "format": "prettier --write \"src/**/*.ts\"",
+        "start": "ts-node -r tsconfig-paths/register src/main.ts",
+        "start:debug": "node --inspect -r ts-node/register -r tsconfig-paths/register src/main.ts",
+        "dev": "nodemon",
+        "dev:debug": "nodemon --config nodemon-debug.json",
+        "lint": "tslint -p tsconfig.json -c tslint.json",
+        "test": "jest",
+        "test:debug": "node --inspect -r ts-node/register -r tsconfig-paths/register node_modules/.bin/jest --runInBand",
+        "test:cov": "jest --coverage",
+        "test:e2e": "jest --config ./test/jest-e2e.json",
+        "nest:gen": "nest generate --flat --no-spec"
+    },
+    "dependencies": {
+        "@nestjs/common": "latest",
+        "@nestjs/core": "latest",
+        "@nestjs/graphql": "^6.0.5",
+        "@nestjs/platform-express": "latest",
+        "@nestjs/platform-fastify": "^6.1.0",
+        "@nestjs/swagger": "latest",
+        "@nestjs/typeorm": "latest",
+        "apollo-server-express": "^2.4.8",
+        "dotenv": "latest",
+        "fastify-static": "^2.4.0",
+        "pg": "latest",
+        "swagger-ui-express": "latest",
+        "ts-node": "^8.0.3",
+        "tsconfig-paths": "latest",
+        "type-graphql": "^0.17.1",
+        "typeorm": "latest",
+        "typescript": "^3.3.4000"
+    },
+    "devDependencies": {
+        "@compodoc/compodoc": "latest",
+        "@nestjs/schematics": "latest",
+        "@nestjs/testing": "latest",
+        "@types/dotenv": "latest",
+        "@types/express": "latest",
+        "@types/jest": "latest",
+        "@types/pg": "latest",
+        "@types/supertest": "latest",
+        "jest": "latest",
+        "nodemon": "latest",
+        "supertest": "latest",
+        "ts-jest": "latest"
+    }
+}
