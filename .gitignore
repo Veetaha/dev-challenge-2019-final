@@ -73,7 +73,7 @@ typings/
 .serverless
 
 # Other
-.vscode/
+# .vscode/
 .idea/
 
 # webpack dist

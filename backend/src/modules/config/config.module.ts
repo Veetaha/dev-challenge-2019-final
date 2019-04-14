@@ -14,4 +14,9 @@ const services = [
     providers: services,
     exports:   services
 })
-export class ConfigModule {}
+export class ConfigModule {
+    static asyncOptsProvider = { 
+        imports:     [ConfigModule], 
+        useExisting: ConfigService, 
+    };
+}

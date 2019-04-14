@@ -1,12 +1,20 @@
 # Startup
 
-1. Run in bash: `docker-compose up`
+Run in bash: `docker-compose up`
+ 
+# Caveats
 
-# Tests
+When debugging with `VSCode` be sure that `localRoot` and `remoteRoot` config
+options have the same value. Thus, docker container work directory path must match
+your local project path when you are debugging your app.
 
-1. Run in bash `npm run test`
-
-# API description
-
-1. Run in bash: `docker-compose up`
-2. View docs from your browser at `localhost/api/swagger`
+```json
+{
+    "type": "node",
+    "request": "attach",
+    "name": "Attach",
+    "protocol": "inspector",
+    "localRoot": "${workspaceFolder}",
+    "remoteRoot": "${workspaceFolder}"
+}
+```

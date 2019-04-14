@@ -2,8 +2,7 @@ import _ from 'lodash';
 import * as MathJS from 'mathjs';
 
 import * as I from '@app/interfaces';
-import { DebugService, AlgorithmsService } from '@modules/utils';
-
+import { AlgorithmsService } from '../algorithms/algorithms.service';
 /**
  * Represents a range of integers [min, max), 
  * i.e. min bound is inclusive, but max bound is exclusive.
@@ -12,15 +11,6 @@ import { DebugService, AlgorithmsService } from '@modules/utils';
  * you need another range bounds.
  */
 export class IntegerRange {
-
-    private static debug: DebugService;
-    private static algo:  AlgorithmsService;
-
-    static init(debug: DebugService, algo: AlgorithmsService) {
-        this.algo  = algo;
-        this.debug = debug;
-    }
-
 
     /**
      * Returns the number of integers, covered by this range, or `max - min`
@@ -46,8 +36,6 @@ export class IntegerRange {
      * @param max maximim range bound (exclusive)
      */
     constructor(min: number, max: number) {
-        IntegerRange.debug.assertFalsy(Number.isNaN(min));
-        IntegerRange.debug.assertFalsy(Number.isNaN(max));
         if (min > max) {
             this.min = Math.round(max) as I.Integer;
             this.max = Math.round(min) as I.Integer;
@@ -86,10 +74,10 @@ export class IntegerRange {
      * @param limit The maximum amount of numbers to generate, 
      *              which is `max - min` by default
      */
-    *randomUniqueIntegers(limit = this.rangeLength){
+    *randomUniqueIntegers(limit = this.rangeLength, algo: AlgorithmsService){
         const numbers = _.range(this.min, this.max);
         for (let i = 0; i < numbers.length && i < limit; ++i) {
-            IntegerRange.algo.swapItems(numbers, i, MathJS.randomInt(i, numbers.length));
+            algo.swapItems(numbers, i, MathJS.randomInt(i, numbers.length));
             yield numbers[i] as I.Integer;
         }
     }

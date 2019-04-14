@@ -1,6 +1,8 @@
 import { Obj, Op, FilterProps, Func, Tag } from 'ts-typedefs';
 export * from 'ts-typedefs';
 
+export * from './jwt-payload.interface';
+
 export type CoreObjData<TObj extends Obj> = FilterProps<
     TObj,
     Op.NotExtends<Func<any, any, TObj>>

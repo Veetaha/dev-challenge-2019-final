@@ -6,12 +6,7 @@ services:
             - .:/usr/app/
             - /usr/app/node_modules
         ports:
-            - "80:3000"
-        command: npm run dev:debug
-        environment: 
-            PORT:    3000
-            DB_HOST: balarama.db.elephantsql.com
-            DB_USER: dnmwhvle
-            DB_PORT: 5432
-            DB_PASSWORD: J8iVYSANdG6Zkgktcggzfhv4MndwHFtO
-            DB_DB: dnmwhvle
+            - "80:${PORT}"
+            - "9229:9229"
+        command: npm run start
+        env_file: .env

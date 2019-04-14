@@ -1,5 +1,5 @@
 FROM node:latest
-WORKDIR /usr/app
+WORKDIR /home/veetaha/my/projects/ts-nestjs-angular-template
 
 COPY . .
 
@@ -12,4 +12,4 @@ EXPOSE 3000
 
 RUN npm run build
 
-CMD ["npm", "run", "start"]
+CMD ["npm", "run", "dev"]

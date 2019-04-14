@@ -29,4 +29,6 @@ const services =  [
     providers: services,
     exports:   services
 })
-export class UtilsModule {}
+export class UtilsModule {
+
+}

@@ -1,23 +1,33 @@
+import 'passport';
+
 import * as Path from 'path';
+import * as Express from 'express';
 import * as Dotenv from 'dotenv';
+import * as Joi from 'typesafe-joi';
 import { Injectable } from '@nestjs/common';
 import { TypeOrmOptionsFactory, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { GqlOptionsFactory, GqlModuleOptions } from '@nestjs/graphql';
+import { JwtOptionsFactory, JwtModuleOptions } from '@nestjs/jwt';
 
 import { EnvService } from '@modules/utils';
+import { ResolveContext } from '@modules/common/resolve-context.interface';
+
 
 
 Dotenv.config();
 
 @Injectable()
-export class ConfigService implements TypeOrmOptionsFactory, GqlOptionsFactory {
+export class ConfigService
+implements TypeOrmOptionsFactory, GqlOptionsFactory, JwtOptionsFactory {
+
+    readonly passwordSalt         = this.env.readEnvOrFail('PASSWORD_SALT');
+    readonly port                 = this.env.readPortFromEnvOrFail('PORT');
+    readonly frontendPublicDir    = this.pathFromRoot('frontend/dist/frontend');
+    readonly defaultUserAvatarUrl = 'default ava url';
 
     constructor(
         private readonly env: EnvService
     ) {}
-    
-    port                  = this.env.readPortFromEnvOrFail('PORT');
-    frontendPublicDir     = this.pathFromRoot('frontend/dist/frontend');
 
     pathFromRoot(...pathParts: string[]) {        
         return Path.normalize(Path.join(__dirname, '../../../../', ...pathParts));
@@ -28,6 +38,13 @@ export class ConfigService implements TypeOrmOptionsFactory, GqlOptionsFactory {
             playground:     true,
             autoSchemaFile: this.pathFromRoot('common/schema.graphql'),
             introspection:  true,
+            path:           '/gql',
+            context({req}: { req: Express.Request }) {
+                const ctx: ResolveContext = {
+                    user: req.user
+                };
+                return ctx;
+            }
         };
     }
 
@@ -41,7 +58,25 @@ export class ConfigService implements TypeOrmOptionsFactory, GqlOptionsFactory {
             password:    this.env.readEnvOrFail('DB_PASSWORD'),
             database:    this.env.readEnvOrFail('DB_DB'),
             entities:   [this.pathFromRoot('backend/src/modules/**/*.entity.ts')],
-            synchronize: true
+            synchronize: true,
+        };
+    }
+
+    createJwtOptions(): JwtModuleOptions {
+        const jwtKeypair = this.env.parseFileSyncOrThrow(
+            this.pathFromRoot('backend/.rsa-keypair.json'),
+            Joi.object({
+                private: Joi.string().required(),
+                public:  Joi.string().required()
+            }).required()
+        );
+        return {
+            publicKey:          jwtKeypair.public,
+            secretOrPrivateKey: jwtKeypair.private,
+            signOptions: {
+                algorithm: 'RS256',
+                expiresIn: '7d',
+            }
         };
     }
 }
