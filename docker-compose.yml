@@ -2,9 +2,6 @@ version: '3'
 services: 
     dev-challenge-final-2019-web:
         build:   '.'
-        volumes:
-            - .:/usr/app/
-            - /usr/app/node_modules
         ports:
             - "80:80"
         environment: 

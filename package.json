@@ -28,6 +28,7 @@
     "tslib": "latest",
     "typesafe-joi": "latest",
     "typescript": "^3.3.4000",
+    "tsconfig-paths": "latest",
     "typescript-collections": "latest",
     "yaml": "latest"
   },
