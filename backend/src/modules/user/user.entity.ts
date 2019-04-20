@@ -5,6 +5,8 @@ import * as Orm from 'typeorm';
 import * as I from '@app/interfaces';
 import { UserRole } from './user-role.enum';
 import { IntegerRange } from '@modules/utils/math/integer-range.class';
+import { StringLength } from '../utils/validation-decorators/string-length.decorator';
+import { ValidateIf } from 'class-validator';
 
 @Gql.ObjectType()
 @Orm.Entity()
@@ -25,7 +27,6 @@ export class User {
     @Orm.UpdateDateColumn() 
     lastUpdateDate!: Date;
 
-
     @Gql.Field(_type => UserRole)
     @Orm.Column({
         type:    'enum',
@@ -34,12 +35,14 @@ export class User {
     })
     role = UserRole.Regular;
 
+    @StringLength(User.limits.name)
     @Gql.Field()
     @Orm.Column({
         length: User.limits.name.max
     })        
     name!: string;
 
+    @StringLength(User.limits.login)
     @Gql.Field()
     @Orm.PrimaryColumn({ 
         length:   User.limits.login.max
@@ -49,6 +52,8 @@ export class User {
     @Orm.Column({ select: false })        
     passwordHash?: string;
 
+    @StringLength(User.limits.avatarUrl)
+    @ValidateIf(ava => ava != null)
     @Gql.Field(_type => String, { nullable: false }) // has default in resolver
     @Orm.Column({ 
         type:    'varchar',

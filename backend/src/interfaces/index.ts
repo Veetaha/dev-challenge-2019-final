@@ -7,6 +7,8 @@ export type CoreEntityData<TEntity extends I.Obj> = I.CoreObjData<
     I.RemoveKeys<TEntity, 'id' | 'creationDate' | 'lastUpdateDate'>
 >;
 
+
+
 export interface ResoveContext {
     readonly user?: I.Nullable<User>;
 }

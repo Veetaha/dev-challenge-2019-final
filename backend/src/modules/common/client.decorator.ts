@@ -1,5 +1,5 @@
 import { Ctx } from 'type-graphql';
-import { ResolveContext } from '@modules/common/resolve-context.interface';
+import { ResolveContext } from '@app/modules/common/resolve-context';
 
 const ctxUserProp: keyof ResolveContext = 'user';
 /**

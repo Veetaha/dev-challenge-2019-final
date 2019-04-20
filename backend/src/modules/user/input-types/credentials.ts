@@ -1,11 +1,11 @@
 import { InputType, Field } from 'type-graphql';
 
 import * as I from '@app/interfaces';
-import { StringLength } from '@modules/utils/decorators/string-length.decorator';
+import { StringLength } from '@app/modules/utils/validation-decorators/string-length.decorator';
 import { User } from '../user.entity';
 
 @InputType()
-export class Credentials {
+export class CredentialsInput {
     @Field()
     @StringLength(User.limits.login)
     login!: string;
@@ -16,4 +16,4 @@ export class Credentials {
 }
 
 
-export type HashedCredentials = I.RenameKey<Credentials, 'password', 'passwordHash'>;
+export type HashedCredentials = I.RenameKey<CredentialsInput, 'password', 'passwordHash'>;

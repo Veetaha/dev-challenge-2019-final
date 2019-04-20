@@ -6,7 +6,15 @@ import { HashedCredentials } from './input-types/credentials';
 @EntityRepository(User)
 export class UserRepo extends Repository<User> {
 
-    async getByHashedCredentialsOrFail(where: HashedCredentials) {
-        return this.findOneOrFail({ where });
+    async getByHashedCredentials(where: HashedCredentials) {
+        return this.findOne({ where });
+    }
+
+    async getByLogin(login: string) {
+        return this.findOne({ where: {login} });
+    }
+
+    async loginIsTaken(login: string) {
+        return (await this.count({ where: {login} })) > 0;
     }
 }

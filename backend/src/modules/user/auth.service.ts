@@ -7,9 +7,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import * as I from '@app/interfaces';
 import { ConfigService } from '@modules/config';
 import { UserRepo } from './user.repository';
-import { Credentials } from './input-types/credentials';
+import { CredentialsInput } from './input-types/credentials';
 import { UserAndToken } from './object-types/user-and-token';
-import { SignUpInput } from './input-types/sign-up-input';
+import { SignUpInput } from './input-types/sign-up';
 
 
 @Injectable()
@@ -27,8 +27,11 @@ export class AuthService {
      * 
      * @throws `Error` if failed to find user by credentials.
      */
-    async signInOrFail(credentials: Credentials) {
-        const user = await this.getByCredentialsOrFail(credentials);
+    async signIn(credentials: CredentialsInput) {
+        const user = await this.getByCredentials(credentials);
+        if (user == null) {
+            return null;
+        }
         const payload: I.JwtPayload = { sub: user.login };
         return new UserAndToken({
             user,
@@ -36,8 +39,8 @@ export class AuthService {
         });
     }
 
-    private async getByCredentialsOrFail({ login, password }: Credentials) {
-        return this.repo.getByHashedCredentialsOrFail({ 
+    private async getByCredentials({ login, password }: CredentialsInput) {
+        return this.repo.getByHashedCredentials({ 
             login, 
             passwordHash: this.getPasswordHash(password) 
         });
@@ -57,8 +60,8 @@ export class AuthService {
      * 
      * @param payload Deserialized jwt payload
      */
-    async getUserByJwtPayload(payload: unknown) {
-        return this.repo.findOne(
+    async getByJwtPayload(payload: unknown) {
+        return this.repo.getByLogin(
             Joi.attempt(
                 payload, 
                 I.JwtPayloadSchema, 
@@ -67,14 +70,14 @@ export class AuthService {
         );
     }
 
-    async signUp({ credentials: {login, password}, name }: SignUpInput) {
-        if ((await this.repo.count({ where: {login} })) > 0) {
+    async signUpOrFail({ credentials: {login, password}, name }: SignUpInput) {
+        if (await this.repo.loginIsTaken(login)) {
             throw new ForbiddenException(`Login '${login}' is already taken.`);
         }
         const user = await this.repo.save({
             login,
-            passwordHash: this.getPasswordHash(password),
-            name
+            name,
+            passwordHash: this.getPasswordHash(password)
         });
 
         const jwtPayload: I.JwtPayload = { sub: user.login };

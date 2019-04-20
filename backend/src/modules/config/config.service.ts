@@ -1,7 +1,4 @@
-import 'passport';
-
 import * as Path from 'path';
-import * as Express from 'express';
 import * as Dotenv from 'dotenv';
 import * as Joi from 'typesafe-joi';
 import { Injectable } from '@nestjs/common';
@@ -10,7 +7,7 @@ import { GqlOptionsFactory, GqlModuleOptions } from '@nestjs/graphql';
 import { JwtOptionsFactory, JwtModuleOptions } from '@nestjs/jwt';
 
 import { EnvService } from '@modules/utils';
-import { ResolveContext } from '@modules/common/resolve-context.interface';
+import { getResolveContext } from '@app/modules/common/resolve-context';
 
 
 
@@ -38,13 +35,8 @@ implements TypeOrmOptionsFactory, GqlOptionsFactory, JwtOptionsFactory {
             playground:     true,
             autoSchemaFile: this.pathFromRoot('common/schema.graphql'),
             introspection:  true,
-            path:           '/gql',
-            context({req}: { req: Express.Request }) {
-                const ctx: ResolveContext = {
-                    user: req.user
-                };
-                return ctx;
-            }
+            path:           '/graphql',
+            context:        getResolveContext
         };
     }
 

@@ -1,12 +1,12 @@
 import { Mutation, Resolver, Query, ResolveProperty, Args, Root } from '@nestjs/graphql';
 
 import { ConfigService } from '@modules/config';
-import { User } from './user.entity';
-import { Credentials } from './input-types/credentials';
-import { UserService } from './user.service';
-import { AuthService } from './auth.service';
-import { UserAndToken } from './object-types/user-and-token';
-import { SignUpInput } from './input-types/sign-up-input';
+import { User          } from './user.entity';
+import { CredentialsInput } from './input-types/credentials';
+import { UserService   } from './user.service';
+import { AuthService   } from './auth.service';
+import { UserAndToken  } from './object-types/user-and-token';
+import { SignUpInput   } from './input-types/sign-up';
 
 
 
@@ -23,14 +23,14 @@ export class UserResolver {
         return user.avatarUrl || this.config.defaultUserAvatarUrl;
     }
  
-    @Mutation(_returns => UserAndToken)
-    async signIn(@Args('credentials') credentials: Credentials) {
-        return this.auth.signInOrFail(credentials);
+    @Mutation(_returns => UserAndToken, { nullable: true })
+    async signIn(@Args('credentials') credentials: CredentialsInput) {
+        return this.auth.signIn(credentials);
     }
 
     @Mutation(_returns => UserAndToken)
     async signUp(@Args('data') data: SignUpInput) {
-        return this.auth.signUp(data);
+        return this.auth.signUpOrFail(data);
     }
 
     @Query(_returns => User, { nullable: true })

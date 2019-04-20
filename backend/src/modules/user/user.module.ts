@@ -1,14 +1,14 @@
-import { Module } from '@nestjs/common';
-import { JwtModule } from '@nestjs/jwt';
+import { Module        } from '@nestjs/common';
+import { JwtModule     } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { ConfigModule } from '@modules/config';
-import { UserService } from './user.service';
-import { AuthService } from './auth.service';
+import { UserService  } from './user.service';
+import { AuthService  } from './auth.service';
 import { UserResolver } from './user.resolver';
-import { User } from './user.entity';
-import { UserRepo } from './user.repository';
-import { CommonModule } from '../common/common.module';
+import { UserRepo     } from './user.repository';
+import { User         } from './user.entity';
+import { CommonModule } from '@modules/common';
 
 @Module({
     imports: [
