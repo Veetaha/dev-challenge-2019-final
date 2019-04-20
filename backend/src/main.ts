@@ -14,7 +14,6 @@ async function bootstrap() {
 
     await app
         .useGlobalPipes(new ValidationPipe({ transform: true }))
-        .useStaticAssets(config.frontendPublicDir)
         .listen(config.port);
         
     logger.info(`🚀  Server is listening on port ${config.port}`);

@@ -1,32 +1,17 @@
 {
-  "name": "ts-nestjs-angular-template",
+  "name": "dev-challenge-2019-final",
   "version": "1.0.0",
-  "description": "Fullstack TypeScript, NestJS, Angular7+ project.",
+  "description": "Dev challenge 2019 final solution",
   "main": "backend/dist/backend/src/main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "(cd frontend && npm run build)",
+    "test": "(cd backend && npm run test)",
     "start": "(cd backend  && npm run start)",
     "dev": "(cd backend  && npm run dev)",
     "docker": "docker-compose up",
     "docker:dev": "docker-compose --file debug.docker-compose.yml up",
-    "postinstall": "npm install --prefix backend && npm install --prefix frontend"
+    "postinstall": "npm install --prefix backend"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Veetaha/ts-nestjs-angular-template.git"
-  },
-  "keywords": [
-    "template",
-    "project",
-    "starter"
-  ],
-  "author": "Vitaly Kryvenko",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/Veetaha/ts-nestjs-angular-template/issues"
-  },
-  "homepage": "https://github.com/Veetaha/ts-nestjs-angular-template#readme",
   "dependencies": {
     "class-transformer": "latest",
     "class-transformer-validator": "latest",

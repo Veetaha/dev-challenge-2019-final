@@ -2,6 +2,7 @@ import { ObjectType, Field, Int } from 'type-graphql';
 import { Min } from 'class-validator';
 
 import * as I from '@app/interfaces';
+import { CopyConstructable } from '../../objects/copy-constructable';
 
 /**
  * Creates an abstract class that is decorated with `@ObjectType()` that 
@@ -13,7 +14,7 @@ import * as I from '@app/interfaces';
 export function Page<TItemClass extends I.Class>(ItemClass: TItemClass) {
 
     @ObjectType({ isAbstract: true })
-    abstract class GenericPage {
+    abstract class GenericPage extends CopyConstructable<GenericPage> {
         /**
          * Contains an array of items payload for this page.
          */
@@ -27,11 +28,6 @@ export function Page<TItemClass extends I.Class>(ItemClass: TItemClass) {
         @Min(0)
         @Field(_type => Int)
         total!: number;
-
-        constructor(data: GenericPage) {
-            Object.assign(this, data);
-        }
-
     }
 
     return GenericPage;

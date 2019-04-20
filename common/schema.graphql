@@ -3,9 +3,38 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+input BooleanFilterInput {
+  unionMode: FilterUnion!
+  eq: Boolean
+  neq: Boolean
+}
+
+type CoordCenter {
+  id: Int!
+  beginSector: Int!
+  endSector: Int!
+}
+
+input CreateCoordCenterInput {
+  id: Int!
+  sector: Int!
+}
+
 input CredentialsInput {
   login: String!
   password: String!
+}
+
+input DateFilterInput {
+  unionMode: FilterUnion!
+  eq: DateTime
+  neq: DateTime
+  geq: DateTime
+  leq: DateTime
+  gt: DateTime
+  lt: DateTime
+  in: [DateTime!]
+  nin: [DateTime!]
 }
 
 """
@@ -13,23 +42,93 @@ The javascript `Date` as string. Type represents date and time as the ISO Date s
 """
 scalar DateTime
 
+"""
+Defines a mode to unite all filter conditions for fields or inside one field
+"""
+enum FilterUnion {
+  And
+  Or
+  Nand
+  Nor
+}
+
+input FloatFilterInput {
+  unionMode: FilterUnion!
+  eq: Float
+  neq: Float
+  geq: Float
+  leq: Float
+  gt: Float
+  lt: Float
+  in: [Float!]
+  nin: [Float!]
+}
+
+type GetCoordCentersResponse {
+  data: [CoordCenter!]!
+  total: Int!
+}
+
+input GetRoutesToSectorInput {
+  sector: Int!
+}
+
+type GetRouteToSectorResponse {
+  coordinationCenter: Int!
+  routes: [SpaceRoute!]!
+}
+
+input IntFilterInput {
+  unionMode: FilterUnion!
+  eq: Int
+  neq: Int
+  geq: Int
+  leq: Int
+  gt: Int
+  lt: Int
+  in: [Int!]
+  nin: [Int!]
+}
+
 type Mutation {
   signIn(credentials: CredentialsInput!): UserAndToken
   signUp(data: SignUpInput!): UserAndToken!
+  createCoordCenter(input: CreateCoordCenterInput!): CoordCenter!
+  deleteCoordCenter(id: Int!): Boolean!
 }
 
-input NestedInput {
-  str: String!
+input PaginationParamsInput {
+  limit: Int!
+  offset: Int!
 }
 
 type Query {
   getUserByLogin(login: String!): User
+  getRoutesToSector(input: GetRoutesToSectorInput!): GetRouteToSectorResponse!
+  getCoordCenters(pageParams: PaginationParamsInput!): GetCoordCentersResponse!
 }
 
 input SignUpInput {
   credentials: CredentialsInput!
   name: String!
-  nested: NestedInput!
+}
+
+type SpaceRoute {
+  """Level of danger."""
+  securityLevel: Float!
+
+  """Sequence of gate numbers."""
+  gates: [Int!]!
+}
+
+input StringFilterInput {
+  unionMode: FilterUnion!
+  eq: String
+  neq: String
+  like: String
+  nlike: String
+  in: [String!]
+  nin: [String!]
 }
 
 type User {

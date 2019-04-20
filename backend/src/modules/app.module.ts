@@ -1,6 +1,9 @@
 import { Module } from '@nestjs/common';
-import { CommonModule } from './common/common.module';
-import { UserModule } from './user/user.module';
+import { CommonModule            } from './common/common.module';
+import { UserModule              } from './user/user.module';
+import { CoordCenterUpdateModule } from './coord-center-update';
+import { SpaceRouteModule        } from './space-route';
+import { CoordCenterModule       } from './coord-center';
 
 
 
@@ -9,7 +12,10 @@ import { UserModule } from './user/user.module';
 @Module({
     imports: [
         CommonModule,
-        UserModule
+        UserModule,
+        SpaceRouteModule,
+        CoordCenterUpdateModule,
+        CoordCenterModule
     ]
 })
 export class AppModule {}

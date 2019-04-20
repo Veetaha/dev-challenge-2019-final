@@ -1,13 +1,35 @@
 version: '3'
 services: 
-    web-debug:
+    dev-challenge-2019-final-web-debug:
         build:
             context: '.'
             dockerfile: debug.dockerfile
         volumes:
-            - .:/home/veetaha/my/projects/ts-nestjs-angular-template
-            - /home/veetaha/my/projects/ts-nestjs-angular-template/node_modules
+            # workaround because of VSCode debugger bug cant use mismatching paths
+            - .:/home/${USER}/my/projects/dev-challenge-2019-final 
+            - /home/${USER}/my/projects/dev-challenge-2019-final/node_modules
         ports:
-            - "80:${PORT}"
+            - "80:80"
             - "9229:9229"
-        env_file: .env
+        environment:
+            DB_HOST: postgres
+            DB_USER: pguser
+            DB_PORT: 5432
+            DB_PASSWORD: pgpassword
+            PASSWORD_SALT: dev-challenge-salt
+            PORT: 80
+            DB_DB: pgdb
+        links: 
+            - postgres
+        depends_on: 
+            - postgres
+    postgres:
+        image: postgres:11.2-alpine
+        restart: always
+        hostname: postgres
+        ports: 
+            - 5432:5432
+        environment:
+            POSTGRES_PASSWORD: pgpassword
+            POSTGRES_USER: pguser
+            POSTGRES_DB:   pgdb

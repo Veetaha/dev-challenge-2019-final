@@ -14,13 +14,26 @@ import { getResolveContext } from '@app/modules/common/resolve-context';
 Dotenv.config();
 
 @Injectable()
-export class ConfigService
+export class 
+ConfigService
 implements TypeOrmOptionsFactory, GqlOptionsFactory, JwtOptionsFactory {
 
     readonly passwordSalt         = this.env.readEnvOrFail('PASSWORD_SALT');
     readonly port                 = this.env.readPortFromEnvOrFail('PORT');
     readonly frontendPublicDir    = this.pathFromRoot('frontend/dist/frontend');
     readonly defaultUserAvatarUrl = 'default ava url';
+
+    readonly jwtKeypair = this.env.parseFileSyncOrThrow(
+        this.pathFromRoot('backend/.rsa-keypair.json'),
+        Joi.object({
+            private: Joi.string().required(),
+            public:  Joi.string().required()
+        }).required()
+    );
+
+    readonly gatesFilePath = this.pathFromRoot('gates.txt');
+    readonly totalSectors  = 500;
+    static readonly totalSectors = 500; // for decorators workaround )))
 
     constructor(
         private readonly env: EnvService
@@ -55,16 +68,9 @@ implements TypeOrmOptionsFactory, GqlOptionsFactory, JwtOptionsFactory {
     }
 
     createJwtOptions(): JwtModuleOptions {
-        const jwtKeypair = this.env.parseFileSyncOrThrow(
-            this.pathFromRoot('backend/.rsa-keypair.json'),
-            Joi.object({
-                private: Joi.string().required(),
-                public:  Joi.string().required()
-            }).required()
-        );
         return {
-            publicKey:          jwtKeypair.public,
-            secretOrPrivateKey: jwtKeypair.private,
+            publicKey:          this.jwtKeypair.public,
+            secretOrPrivateKey: this.jwtKeypair.private,
             signOptions: {
                 algorithm: 'RS256',
                 expiresIn: '7d',

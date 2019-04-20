@@ -1,12 +1,31 @@
 version: '3'
 services: 
-    web:
+    dev-challenge-final-2019-web:
         build:   '.'
         volumes:
             - .:/usr/app/
             - /usr/app/node_modules
         ports:
-            - "80:${PORT}"
-            - "9229:9229"
-        command: npm run start
-        env_file: .env
+            - "80:80"
+        environment: 
+            PORT: 80
+            DB_HOST: postgres
+            DB_USER: pguser
+            DB_PORT: 5432
+            DB_PASSWORD: pgpassword
+            PASSWORD_SALT: dev-challenge-salt
+            DB_DB: pgdb
+        links: 
+            - postgres
+        depends_on: 
+            - postgres
+    postgres:
+        image: postgres:11.2-alpine
+        restart: always
+        hostname: postgres
+        ports: 
+            - 5432:5432
+        environment:
+            POSTGRES_PASSWORD: pgpassword
+            POSTGRES_USER: pguser
+            POSTGRES_DB:   pgdb

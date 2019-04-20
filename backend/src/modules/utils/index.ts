@@ -9,5 +9,5 @@ export * from './validation-decorators/joi-validate.decorator';
 export * from './validation-decorators/string-length.decorator';
 export * from './validation-decorators/validate-if-present.decorator';
 export * from './utils.module';
-export * from './orm-repo-utils/orm-repo-utils.service';
+export * from './orm-utils/orm-utils.service';
 export * from './graphql';

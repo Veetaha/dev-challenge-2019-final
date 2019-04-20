@@ -4,6 +4,6 @@ export const JwtPayloadSchema = Joi.object({
 
     sub: Joi.string().min(2).max(37).required()
     
-}).required();
+}).unknown().required();
 
 export type JwtPayload = Joi.SchemaValue<typeof JwtPayloadSchema>;

@@ -3,20 +3,18 @@ import { Min, Max } from 'class-validator';
 
 import * as I from '@app/interfaces';
 
-export interface PaginationParamsInputOpts<TFilterClass extends I.Class> {
+export interface PaginationParamsInputOpts {
     minLimit?: number;
     maxLimit?: number;
-    filter:    TFilterClass;
 }
 
-export function PaginationParamsInput<TFilterClass extends I.Class>({
+export function PaginationParamsInput({
     minLimit = 0,
-    maxLimit = 500,
-    filter
-}: PaginationParamsInputOpts<TFilterClass>) {
+    maxLimit = 500
+}: PaginationParamsInputOpts) {
 
     @InputType({ isAbstract: true })
-    class GenericPaginationParamsInput {
+    abstract class GenericPaginationParamsInput {
 
         @Max(maxLimit)
         @Min(minLimit)
@@ -26,10 +24,8 @@ export function PaginationParamsInput<TFilterClass extends I.Class>({
         @Min(0)
         @Field(_type => Int)
         offset!: number;
-
-        @Field(_type => filter)
-        filters!: InstanceType<TFilterClass>;
     }
 
     return GenericPaginationParamsInput;
 }
+export type PaginationParamsInput = I.InstanceType<ReturnType<typeof PaginationParamsInput>>;

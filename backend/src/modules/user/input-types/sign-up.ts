@@ -5,12 +5,6 @@ import { StringLength } from '@app/modules/utils/validation-decorators/string-le
 import { CredentialsInput } from './credentials';
 
 @InputType()
-class NestedInput {
-    @Field() 
-    str!: string;
-}
-
-@InputType()
 export class SignUpInput {
     @Field()
     credentials!: CredentialsInput;
@@ -18,7 +12,4 @@ export class SignUpInput {
     @Field()
     @StringLength(User.limits.name)
     name!: string;
-
-    @Field()
-    nested!: NestedInput;
 }

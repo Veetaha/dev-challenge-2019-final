@@ -14,4 +14,4 @@ registerEnumType(SortingOrder, {
 
 export type SortInputType<
     TObjType extends I.Obj
-> = Partial<I.DeepMapValues<I.DeepNonNullable<TObjType>, SortingOrder>;
+> = Partial<I.DeepMapValues<I.DeepNonNullable<TObjType>, SortingOrder>>;

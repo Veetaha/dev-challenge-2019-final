@@ -1,5 +1,5 @@
 FROM node:latest
-WORKDIR /home/veetaha/my/projects/ts-nestjs-angular-template
+WORKDIR /home/${USER}/my/projects/dev-challenge-2019-final
 
 COPY . .
 
@@ -9,7 +9,5 @@ RUN npm set unsafe-perm true
 RUN npm install
 
 EXPOSE 3000
-
-RUN npm run build
 
 CMD ["npm", "run", "dev"]

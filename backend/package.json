@@ -2,7 +2,6 @@
     "name": "backend",
     "version": "1.0.0",
     "description": "Backend part of the website",
-    "author": "Vitaly Kryvenko",
     "license": "MIT",
     "scripts": {
         "gen:rsa-keypair": "ts-node ./scripts/generate-rsa-keypair.ts",
@@ -30,6 +29,7 @@
         "dotenv": "latest",
         "fastify-static": "^2.4.0",
         "generate-rsa-keypair": "^0.1.2",
+        "graphql": "^14.2.1",
         "passport": "^0.4.0",
         "passport-jwt": "^4.0.0",
         "pg": "latest",
